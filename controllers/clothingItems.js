@@ -47,7 +47,8 @@ const deleteClothingItem = (req, res) => {
         return res
           .status(NOT_FOUND)
           .send({ message: "There is no item with the requested ID" });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
       return res
@@ -70,7 +71,8 @@ const likeClothingItem = (req, res) => {
         return res
           .status(NOT_FOUND)
           .send({ message: "There is no item with the requested ID" });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
       return res
@@ -93,7 +95,8 @@ const dislikeClothingItem = (req, res) => {
         return res
           .status(NOT_FOUND)
           .send({ message: "There is no item with the requested ID" });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
       return res

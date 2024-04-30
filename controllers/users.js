@@ -46,7 +46,8 @@ const getUser = (req, res) => {
         return res
           .status(NOT_FOUND)
           .send({ message: "There is no user with the requested ID" });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid user ID" });
       }
       return res
