@@ -1,15 +1,15 @@
 const Item = require("../models/clothingItem");
 const {
-  OK,
   CREATED,
   BAD_REQUEST,
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
+  FORBIDDEN,
 } = require("../utils/errors");
 
 const getClothingItems = (req, res) => {
   Item.find({})
-    .then((items) => res.status(OK).send(items))
+    .then((items) => res.send(items)) // status 200 by default
     .catch((err) => {
       console.error(err);
       return res
@@ -38,9 +38,18 @@ const createClothingItem = (req, res) => {
 
 const deleteClothingItem = (req, res) => {
   const { itemId } = req.params;
-  Item.findByIdAndRemove(itemId)
+  Item.findById(itemId)
     .orFail()
-    .then((item) => res.status(OK).send(item))
+    .then((item) => {
+      if (String(item.owner) !== req.user._id) {
+        return res
+          .status(FORBIDDEN)
+          .send({ message: "User is not authorized to delete this item" });
+      }
+      return item.deleteOne().then(() => {
+        res.send({ message: "Item deleted" });
+      });
+    })
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
@@ -64,7 +73,7 @@ const likeClothingItem = (req, res) => {
     { new: true }
   )
     .orFail()
-    .then((item) => res.status(OK).send(item))
+    .then((item) => res.send(item))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
@@ -88,7 +97,7 @@ const dislikeClothingItem = (req, res) => {
     { new: true }
   )
     .orFail()
-    .then((item) => res.status(OK).send(item))
+    .then((item) => res.send(item))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {

@@ -1,11 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const mainRouter = require("./routes/index");
 
 const { PORT = 3001 } = process.env;
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.listen(PORT, (error) => {
   if (error) {
@@ -21,11 +23,4 @@ mongoose
   })
   .catch(console.error);
 
-// temp authorization middleware
-app.use((req, res, next) => {
-  req.user = {
-    _id: "662ecca31bb7d84522705025",
-  };
-  next();
-});
 app.use("/", mainRouter);
