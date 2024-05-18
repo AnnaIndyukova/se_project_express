@@ -50,8 +50,16 @@ const login = (req, res) => {
       });
       return res.send({ token });
     })
-    .catch(() => {
-      res.status(UNAUTHORIZED).send({ message: "Incorrect email or password" });
+    .catch((err) => {
+      console.error(err);
+      if (err.message === "Incorrect email or password") {
+        return res
+          .status(UNAUTHORIZED)
+          .send({ message: "Incorrect email or password" });
+      }
+      return res
+        .status(INTERNAL_SERVER_ERROR)
+        .send({ message: "Server error" });
     });
 };
 
@@ -85,6 +93,7 @@ const updateUser = (req, res) => {
       runValidators: true,
     }
   )
+    .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       console.error(err);
