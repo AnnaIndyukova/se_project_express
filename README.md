@@ -20,5 +20,10 @@
 - RestAPI
 - MongoDB
 - jwt tokens
-- middleware authentification
+- middleware authentification, request validation and centralized error handling
 - Tested with Postman
+
+## Links
+
+[Live Website](https://wtwr.newhopes.info/) \
+[Frontend Repository](https://github.com/AnnaIndyukova/se_project_react)
