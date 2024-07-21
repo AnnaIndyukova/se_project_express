@@ -4,7 +4,7 @@ const itemRouter = require("./clothingItems");
 const { NOT_FOUND } = require("../utils/errors");
 const { createUser, login } = require("../controllers/users");
 
-app.get("/crash-test", () => {
+router.post("/crash-test", () => {
   setTimeout(() => {
     throw new Error("Server will crash now");
   }, 0);
